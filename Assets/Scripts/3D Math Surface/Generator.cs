@@ -3,7 +3,9 @@ using UnityEngine;
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
 public class Generator : MonoBehaviour
 {
+    [Tooltip("Number of rows and columns of vertices in the place")]
     [SerializeField] private int size = 11;
+    [Tooltip("Units between the vertices")]
     [SerializeField] private float spacing = 1f;
     [SerializeField] private float heightMultiplier = 1f;   // Initial height multiplier
     private float _heightMultiplier;    // Variable height multiplier
