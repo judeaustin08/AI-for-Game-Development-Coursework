@@ -17,6 +17,7 @@ public class Generator : MonoBehaviour
 
     private MeshFilter meshFilter;
     private Mesh mesh;
+    private MeshCollider col;
 
     [Header("Noise Generation")]
     [SerializeField] private float frequency = 0.1f;
@@ -77,7 +78,10 @@ public class Generator : MonoBehaviour
         };
         // Recalculate normals after updating the vertices for lighting
         mesh.RecalculateNormals();
-        meshFilter.mesh = mesh;
+        meshFilter.sharedMesh = mesh;
+
+        if(TryGetComponent<MeshCollider>(out col))
+            col.sharedMesh = mesh;
     }
 
     void Update() {
@@ -109,7 +113,7 @@ public class Generator : MonoBehaviour
             Vector3 normal = Vector3.Cross(a, b);
             GameObject particleObj = Instantiate(
                 particlePrefab, 
-                vertices[tris[i]], 
+                transform.TransformPoint(vertices[tris[i]]), 
                 Quaternion.FromToRotation(Vector3.up, normal)
             );
             Destroy(particleObj, 1);
