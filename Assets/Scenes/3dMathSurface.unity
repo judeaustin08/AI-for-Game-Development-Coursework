@@ -168,6 +168,8 @@ MonoBehaviour:
   size: 10
   spacing: 1
   heightMultiplier: 1
+  particlePrefab: {fileID: 7015580785291914422, guid: f354032c6bc154f08acfda52cfbec527, type: 3}
+  interval: 1
 --- !u!23 &287289388
 MeshRenderer:
   m_ObjectHideFlags: 0

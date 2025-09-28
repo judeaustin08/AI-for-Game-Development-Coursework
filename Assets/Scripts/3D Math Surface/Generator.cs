@@ -3,6 +3,8 @@ using UnityEngine;
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
 public class Generator : MonoBehaviour
 {
+    [Header("Surface Variables")]
+
     [Tooltip("Number of rows and columns of vertices in the place")]
     [SerializeField] private int size = 11;
     [Tooltip("Units between the vertices")]
@@ -15,6 +17,16 @@ public class Generator : MonoBehaviour
 
     private MeshFilter meshFilter;
     private Mesh mesh;
+
+    [Header("Noise Generation")]
+    [SerializeField] private float frequency = 0.1f;
+
+    [Header("Particle Variables")]
+
+    [SerializeField] private GameObject particlePrefab;
+    [Tooltip("Time in seconds between particle bursts")]
+    [SerializeField] private float interval = 1;
+    private float timer = 0;
 
     void Awake() {
         // Initialize the 2D array with a variable size
@@ -74,13 +86,33 @@ public class Generator : MonoBehaviour
 
         // Update the height of each point in the mesh
         for (int i = 0; i < vertices.Length; i++) {
+            // World position is used for the height based on the mathematical function and perlin noise
             Vector3 worldPos = transform.TransformPoint(vertices[i]);
             
-            float y = (Mathf.Pow(worldPos.x, 2) + Mathf.Pow(worldPos.z, 2)) * _heightMultiplier;
+            float y = (Mathf.Pow(worldPos.x, 2) + Mathf.Pow(worldPos.z, 2)) * _heightMultiplier * Mathf.PerlinNoise(worldPos.x * frequency + Time.time, worldPos.y * frequency);
             vertices[i].y = y;
         }
         
         mesh.SetVertices(vertices);
         mesh.RecalculateNormals();
+
+        timer += Time.deltaTime;
+        // Check timer
+        if (timer > interval) {
+            timer -= interval;
+
+            // Randomly choose a face
+            int i = Random.Range(0, (size - 1) * (size - 1) - 1) * 6;
+            tris = mesh.GetTriangles(0);
+            Vector3 a = vertices[tris[i + 1]] - vertices[tris[i]];
+            Vector3 b = vertices[tris[i + 2]] - vertices[tris[i]];
+            Vector3 normal = Vector3.Cross(a, b);
+            GameObject particleObj = Instantiate(
+                particlePrefab, 
+                vertices[tris[i]], 
+                Quaternion.FromToRotation(Vector3.up, normal)
+            );
+            Destroy(particleObj, 1);
+        }
     }
 }
