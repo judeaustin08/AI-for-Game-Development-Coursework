@@ -18,11 +18,11 @@ public class PatrolBehaviour : AIBehaviour
 
     public override Vector3 SelectTarget()
     {
-        Vector3 rand = initialPosition + Random.insideUnitSphere * patrolRadius;
-        return new Vector3(
+        Vector2 rand = Random.insideUnitCircle * patrolRadius;
+        return initialPosition + new Vector3(
             rand.x,
             parent.transform.position.y,
-            rand.z
+            rand.y
         );
     }
 
