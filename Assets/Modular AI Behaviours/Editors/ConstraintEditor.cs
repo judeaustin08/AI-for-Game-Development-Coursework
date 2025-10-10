@@ -11,11 +11,8 @@ public class ConstraintEditor : Editor
     SerializedProperty comparisonType_prop;
     SerializedProperty boolEvaluationType_prop;
 
-    SerializedProperty distanceThreshold_prop;
-    SerializedProperty targetTag_prop;
-
     SerializedProperty propertyName_prop;
-    SerializedProperty floatCompare_prop;
+    SerializedProperty compareValue_prop;
 
     private void OnEnable()
     {
@@ -23,11 +20,8 @@ public class ConstraintEditor : Editor
         comparisonType_prop = serializedObject.FindProperty("comparisonType");
         boolEvaluationType_prop = serializedObject.FindProperty("boolEvaluationType");
 
-        distanceThreshold_prop = serializedObject.FindProperty("distanceThreshold");
-        targetTag_prop = serializedObject.FindProperty("targetTag");
-
         propertyName_prop = serializedObject.FindProperty("propertyName");
-        floatCompare_prop = serializedObject.FindProperty("floatCompare");
+        compareValue_prop = serializedObject.FindProperty("compareValue");
     }
 
     public override void OnInspectorGUI()
@@ -40,14 +34,14 @@ public class ConstraintEditor : Editor
         switch (type)
         {
             case Type.DISTANCE:
-                PropertyField(distanceThreshold_prop);
+                PropertyField(propertyName_prop);
+                PropertyField(compareValue_prop);
                 PropertyField(comparisonType_prop);
-                PropertyField(targetTag_prop);
                 break;
             case Type.FLOAT:
                 PropertyField(propertyName_prop);
                 PropertyField(comparisonType_prop);
-                PropertyField(floatCompare_prop);
+                PropertyField(compareValue_prop);
                 break;
             case Type.BOOLEAN:
                 PropertyField(propertyName_prop);

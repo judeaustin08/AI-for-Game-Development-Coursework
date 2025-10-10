@@ -5,7 +5,6 @@ using UnityEngine;
 public abstract class AIBehaviour : ScriptableObject
 {
     protected GameObject parent;
-    protected NNConstraint constraint = new();
     public float minimumInterval;
     public float randomInterval;
     public bool continuous = false;
@@ -14,11 +13,4 @@ public abstract class AIBehaviour : ScriptableObject
     public abstract Vector3 SelectTarget();
     public abstract void Gizmos();
     public abstract void Initialize(GameObject parent);
-
-    // Set global variables
-    public AIBehaviour()
-    {
-        // Return only walkable nodes
-        constraint.constrainWalkability = true;
-    }
 }

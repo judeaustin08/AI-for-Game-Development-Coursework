@@ -20,8 +20,8 @@ public class Constraint : ScriptableObject
     }
     public enum BooleanEvaluationType
     {
-        EQUAL,
-        NOT_EQUAL
+        TRUE,
+        FALSE
     }
 
     public Type type;
@@ -34,19 +34,8 @@ public class Constraint : ScriptableObject
 
     public string propertyName;
 
-    #region Distance variables
-
-    public float distanceThreshold;
-    public string targetTag;
-
-    #endregion
-
-    #region Float variables
-
     [Tooltip("Value with which to compare the provided property")]
-    public float floatCompare;
-
-    #endregion
+    public float compareValue;
 
     public static bool Evaluate(IEnumerable<Constraint> list)
     {
@@ -71,19 +60,17 @@ public class Constraint : ScriptableObject
         switch (type)
         {
             case Type.DISTANCE:
+                Transform target = (Transform)property.GetValue(parentNPC);
                 float distance = Vector3.Distance(
                     parent.transform.position,
-                    GameObject.FindGameObjectWithTag(targetTag).transform.position
+                    target.transform.position
                 );
-                return Compare(distance, distanceThreshold);
+                return Compare(distance, compareValue);
             case Type.FLOAT:
-                return Compare((float)property.GetValue(parentNPC), floatCompare);
+                return Compare((float)property.GetValue(parentNPC), compareValue);
             case Type.BOOLEAN:
                 bool result = (bool)property.GetValue(parentNPC);
-                if (boolEvaluationType == BooleanEvaluationType.EQUAL)
-                    return result;
-                else
-                    return !result;
+                return result == (boolEvaluationType == BooleanEvaluationType.TRUE);
             default:
                 return false;
         }

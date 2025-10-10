@@ -11,7 +11,7 @@ public class NPC : MonoBehaviour
     [SerializeField] private ConstrainedTrigger[] triggers;
 
     [Tooltip("Order these in descending order of priority. The first behaviour that fits the constraints will be chosen for pathfinding.")]
-    [SerializeField] private MovementBehaviour[] movementBehaviours;
+    [SerializeField] private Behaviour[] movementBehaviours;
 
     private int activeBehaviour = -1;
     private int checkActiveBehaviour = -1;
@@ -20,7 +20,12 @@ public class NPC : MonoBehaviour
 
     [Header("NPC")]
 
-    public Transform target;
+    [SerializeField] private Transform target;
+    public Transform _Target
+    {
+        get { return target; }
+        set { target = value; }
+    }
     private Vector3 eyePos;
     private Vector3 targetAtEyeHeight;
 
@@ -75,7 +80,7 @@ public class NPC : MonoBehaviour
     */
     private void Start()
     {
-        foreach (MovementBehaviour b in movementBehaviours)
+        foreach (Behaviour b in movementBehaviours)
         {
             b.behaviour.Initialize(gameObject);
 
@@ -219,7 +224,7 @@ public class NPC : MonoBehaviour
 }
 
 [System.Serializable]
-public struct MovementBehaviour
+public struct Behaviour
 {
     public AIBehaviour behaviour;
     public Constraint[] constraints;
