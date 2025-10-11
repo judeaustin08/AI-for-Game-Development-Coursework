@@ -26,7 +26,7 @@ public class PatrolBehaviour : AIBehaviour
         );
     }
 
-    public override void Gizmos()
+    public new void Gizmos()
     {
         if (drawPatrolRadius)
             Handles.DrawWireDisc(initialPosition, Vector3.up, patrolRadius, 0.5f);

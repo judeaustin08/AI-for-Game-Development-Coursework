@@ -10,7 +10,11 @@ public abstract class AIBehaviour : ScriptableObject
     public bool continuous = false;
     public float speedModifier = 0;
     public float multiplicativeSpeedMultiplier = 1;
-    public abstract Vector3 SelectTarget();
-    public abstract void Gizmos();
     public abstract void Initialize(GameObject parent);
+    public abstract Vector3 SelectTarget();
+    
+    public void Gizmos()
+    {
+        // Can be overwritten in child classes
+    }
 }

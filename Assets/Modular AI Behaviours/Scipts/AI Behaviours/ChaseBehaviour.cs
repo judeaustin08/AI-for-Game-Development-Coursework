@@ -8,7 +8,6 @@ public class ChaseBehaviour : AIBehaviour
 
     private Vector3 lastKnownPosition;
     private Transform target;
-    private Vector3 t_pos;
 
     public override void Initialize(GameObject parent)
     {
@@ -23,7 +22,7 @@ public class ChaseBehaviour : AIBehaviour
     */
     public override Vector3 SelectTarget()
     {
-        t_pos = new(
+        Vector3 t_pos = new(
             target.position.x,
             parent.transform.position.y,
             target.position.z
@@ -34,10 +33,5 @@ public class ChaseBehaviour : AIBehaviour
             lastKnownPosition = t_pos;
 
         return lastKnownPosition;
-    }
-
-    public override void Gizmos()
-    {
-        // No gizmos
     }
 }
